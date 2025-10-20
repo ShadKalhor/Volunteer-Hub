@@ -8,6 +8,7 @@ Many local organizations struggle to efficiently manage volunteers while potenti
 
 ## 👥 Target Users
 
+
 1. **Volunteers**
    - Community members looking for volunteer opportunities
    - Students seeking service hours
