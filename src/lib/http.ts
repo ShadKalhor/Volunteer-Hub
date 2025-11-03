@@ -1,8 +1,8 @@
 import axios from 'axios'
 import type { AxiosError, InternalAxiosRequestConfig } from 'axios'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
-import type { ApiError } from '@/types/models'
+import { useAuthStore } from '../stores/auth'
+import type { ApiError } from '../types/models'
 
 const baseURL = import.meta.env.VITE_API_URL || '/api'
 
