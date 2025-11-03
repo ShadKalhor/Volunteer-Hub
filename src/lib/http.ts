@@ -1,4 +1,5 @@
-import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios'
+import axios from 'axios'
+import type { AxiosError, InternalAxiosRequestConfig } from 'axios'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import type { ApiError } from '@/types/models'
@@ -51,7 +52,7 @@ http.interceptors.response.use(
     // Format error response
     const apiError: ApiError = {
       message: error.response?.data?.message || 'An unexpected error occurred',
-      errors: error.response?.data?.errors,
+      errors: error.response?.data?.errors || {},
       status: error.response?.status || 500
     }
 
@@ -62,22 +63,26 @@ http.interceptors.response.use(
 export default http
 
 // Type-safe API request methods
-export async function get<T>(url: string, params?: Record<string, any>) {
-  return http.get<T>(url, { params })
+const api = {
+  async get<T>(url: string, params?: Record<string, any>) {
+    return http.get<T>(url, { params })
+  },
+
+  async post<T>(url: string, data?: any) {
+    return http.post<T>(url, data)
+  },
+
+  async put<T>(url: string, data: any) {
+    return http.put<T>(url, data)
+  },
+
+  async patch<T>(url: string, data: any) {
+    return http.patch<T>(url, data)
+  },
+
+  async delete<T>(url: string) {
+    return http.delete<T>(url)
+  }
 }
 
-export async function post<T>(url: string, data?: any) {
-  return http.post<T>(url, data)
-}
-
-export async function put<T>(url: string, data: any) {
-  return http.put<T>(url, data)
-}
-
-export async function patch<T>(url: string, data: any) {
-  return http.patch<T>(url, data)
-}
-
-export async function del<T>(url: string) {
-  return http.delete<T>(url)
-}
+export const { get, post, put, patch, delete: del } = api

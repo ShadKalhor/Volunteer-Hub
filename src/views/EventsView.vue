@@ -1,11 +1,19 @@
 <template>
-  <div class="py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="lg:text-center">
-        <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Opportunities</h2>
-        <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-          Upcoming Events
-        </p>
+  <Transition
+    enter-active-class="transition-opacity duration-500"
+    enter-from-class="opacity-0"
+    enter-to-class="opacity-100"
+    leave-active-class="transition-opacity duration-500"
+    leave-from-class="opacity-100"
+    leave-to-class="opacity-0"
+  >
+    <div v-if="!isLoading" class="py-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="lg:text-center">
+          <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Opportunities</h2>
+          <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+            Upcoming Events
+          </p>
         <p class="mt-4 max-w-2xl text-xl text-gray-500 dark:text-gray-300 lg:mx-auto">
           Find and sign up for volunteer events in your area
         </p>
@@ -49,4 +57,22 @@
       </div>
     </div>
   </div>
+  </Transition>
+
+  <div v-if="isLoading" class="flex items-center justify-center min-h-[60vh]">
+    <LoadingSpinner size="large" text="Loading events..." />
+  </div>
 </template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import LoadingSpinner from '../components/LoadingSpinner.vue'
+
+const isLoading = ref(true)
+
+onMounted(async () => {
+  // Simulate loading events
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  isLoading.value = false
+})
+</script>

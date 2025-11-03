@@ -1,14 +1,22 @@
 <template>
-  <div class="min-h-screen flex flex-col">
-    <header class="bg-white dark:bg-gray-800 shadow-sm">
-      <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-          <div class="flex">
-            <div class="flex-shrink-0 flex items-center">
-              <router-link to="/" class="text-xl font-bold text-blue-600">
-                VolunteerHub
-              </router-link>
-            </div>
+  <Transition
+    enter-active-class="transition-opacity duration-500"
+    enter-from-class="opacity-0"
+    enter-to-class="opacity-100"
+    leave-active-class="transition-opacity duration-500"
+    leave-from-class="opacity-100"
+    leave-to-class="opacity-0"
+  >
+    <div v-if="!isLoading" class="min-h-screen flex flex-col">
+      <header class="bg-white dark:bg-gray-800 shadow-sm">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex justify-between h-16">
+            <div class="flex">
+              <div class="flex-shrink-0 flex items-center">
+                <router-link to="/" class="text-xl font-bold text-blue-600">
+                  VolunteerHub
+                </router-link>
+              </div>
             <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
               <router-link
                 v-for="item in navigation"
@@ -65,12 +73,29 @@
       </div>
     </footer>
   </div>
+  </Transition>
+  
+  <div v-if="isLoading" class="fixed inset-0 flex items-center justify-center bg-white dark:bg-gray-900">
+    <LoadingSpinner size="large" text="Loading..." />
+  </div>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import LoadingSpinner from './LoadingSpinner.vue'
+
+const isLoading = ref(true)
+
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Events', href: '/events' },
   { name: 'Organizations', href: '/organizations' },
 ]
+
+onMounted(() => {
+  // Simulate initial loading time
+  setTimeout(() => {
+    isLoading.value = false
+  }, 1500) // 1.5 seconds delay
+})
 </script>
